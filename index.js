@@ -29,6 +29,7 @@ MongoClient.connect(MONGODB_URI, (error, client) => {
     }
     console.log('Connected to MongoDB');
     const db = client.db(MONGODB_NAME);
+    const collection = db.collection('drops');
 
     // Enable CORS
     // (See https://enable-cors.org/server_expressjs.html)
@@ -42,13 +43,39 @@ MongoClient.connect(MONGODB_URI, (error, client) => {
     app.get('/', (req, res) => {
         res.send('Rooting for you!');
     });
+
     app.get('/read/:id', (req, res) => {
         res.send(`Received GET request for ${req.params.id}`);
     });
+
     app.post('/write', (req, res) => {
-        // console.log(req.body);
-        const message = req.body;
-        // res.send('Received POST request to create drop.');
-        res.send(message);
+        if (req.body.message) {
+            collection.insertOne({
+                message: req.body.message
+            })
+            .then(result => {
+                const reply = {
+                    writeSucceeded: true,
+                    details: 'Write to database succeeded!',
+                    id: result.insertedId
+                }
+                res.send(reply);
+            })
+            .catch(error => {
+                const reply = {
+                    writeSucceeded: false,
+                    details: 'Failed to write to database.',
+                    id: undefined
+                }
+                res.send(reply);
+            });
+        } else {
+            const reply = {
+                writeSucceeded: false,
+                details: "Invalid request - Define the 'message' property in your request!",
+                id: undefined
+            }
+            res.send(reply);
+        }
     });
 })
