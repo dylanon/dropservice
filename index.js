@@ -4,8 +4,8 @@ const express = require('express');
 // Initialize the app
 const app = express();
 
-// Define port
-const port = 8080;
+// Set port
+const port = process.env.PORT || 5000;
 
 // Listen for requests
 app.listen(port, () => {
@@ -13,6 +13,10 @@ app.listen(port, () => {
 });
 
 // Define routes
+app.get('/', (req, res) => {
+    res.send('Rooting for you!');
+});
+
 app.get('/read/:id', (req, res) => {
     res.send(`Received GET request for ${req.params.id}`);
 });
