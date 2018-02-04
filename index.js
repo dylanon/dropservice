@@ -45,7 +45,37 @@ MongoClient.connect(MONGODB_URI, (error, client) => {
     });
 
     app.get('/read/:id', (req, res) => {
-        res.send(`Received GET request for ${req.params.id}`);
+        // Validate the id
+        // ObjectID requires a string of 24 hex characters
+        if (req.params.id.length !== 24) {
+            return res.send({
+                deletedId: null,
+                message: null,
+                details: 'Invalid request. id must be a string of 24 hex characters.'
+            });
+        }
+        // Find document with matching id in database, and store its message locally
+        // Delete the document
+        collection.findOneAndDelete({
+            _id: new MongoClient.ObjectID(req.params.id)
+        })
+        .then(data => {
+            // Send the stored message
+            res.send({
+                deletedId: data.value._id,
+                message: data.value.message,
+                details: `Deleted document with id ${data.value._id}.`
+            });
+        })
+        .catch(error => {
+            // findOneAndDelete throws an error if the id is not found
+            // Handle it!
+            res.send({
+                deletedId: null,
+                message: null,
+                details: `Could not find document with id ${req.params.id}. Nothing deleted.`
+            });
+        });
     });
 
     app.post('/write', (req, res) => {
