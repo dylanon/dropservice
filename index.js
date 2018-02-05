@@ -2,6 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb');
+const env = require('./env');
 
 // Import routes
 const defineRoutes = require('./routes');
@@ -10,7 +11,7 @@ const defineRoutes = require('./routes');
 const app = express();
 
 // Set port
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || env.PORT;
 
 // Apply middleware
 app.use(bodyParser.urlencoded({
@@ -18,8 +19,8 @@ app.use(bodyParser.urlencoded({
 }));
 
 // Set database credentials
-const MONGODB_URI = process.env.MONGODB_URI;
-const MONGODB_NAME = process.env.MONGODB_NAME;
+const MONGODB_URI = process.env.MONGODB_URI || env.MONGODB_URI;
+const MONGODB_NAME = process.env.MONGODB_NAME || env.MONGODB_NAME;
 
 MongoClient.connect(MONGODB_URI, (error, client) => {
     if (error) {
@@ -43,4 +44,4 @@ MongoClient.connect(MONGODB_URI, (error, client) => {
     app.listen(PORT, () => {
         console.log(`Listening on port ${PORT}`);
     });
-})
+});
