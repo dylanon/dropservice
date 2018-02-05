@@ -1,6 +1,5 @@
 // Import dependencies
 const express = require('express');
-const bodyParser = require('body-parser');
 const MongoClient = require('mongodb');
 const env = require('./env');
 
@@ -12,11 +11,6 @@ const app = express();
 
 // Set port
 const PORT = process.env.PORT || env.PORT;
-
-// Apply middleware
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
 
 // Set database credentials
 const MONGODB_URI = process.env.MONGODB_URI || env.MONGODB_URI;

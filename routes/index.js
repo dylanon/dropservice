@@ -1,6 +1,12 @@
+const bodyParser = require('body-parser');
 const ObjectID = require('mongodb').ObjectID;
 
 module.exports = function(app, collection) {
+    // Apply middleware
+    app.use(bodyParser.urlencoded({
+        extended: true
+    }));
+
     // Define routes
     app.get('/', (req, res) => {
         res.send('Rooting for you!');
