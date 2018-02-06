@@ -9,9 +9,6 @@ const defineRoutes = require('./routes');
 // Initialize the app
 const app = express();
 
-// Set port
-const PORT = process.env.PORT || env.PORT;
-
 // Set database credentials
 const MONGODB_URI = process.env.MONGODB_URI || env.MONGODB_URI;
 const MONGODB_NAME = process.env.MONGODB_NAME || env.MONGODB_NAME;
@@ -33,9 +30,6 @@ MongoClient.connect(MONGODB_URI, (error, client) => {
     });
 
     defineRoutes(app, collection);
-
-    // Listen for requests
-    app.listen(PORT, () => {
-        console.log(`Listening on port ${PORT}`);
-    });
 });
+
+module.exports = app;

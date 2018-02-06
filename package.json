@@ -4,8 +4,8 @@
   "description": "Backend for temporary message drop system.",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js",
+    "dev": "nodemon server.js",
+    "start": "node server.js",
     "test": "jest"
   },
   "author": "Dylan On",
