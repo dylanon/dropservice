@@ -1,4 +1,4 @@
-const app = require('./index.js');
+const app = require('./app');
 const env = require('./env');
 
 // Set port
