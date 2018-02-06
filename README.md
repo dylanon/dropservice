@@ -20,9 +20,9 @@ Node.js backend for a web application that stores messages for one-time access.
 
 ## Enhancements
 
-- Encryption at rest
-  - For POST requests, encrypt the message before storage (use a secret key stored as an environment variable, or generate a different one for every user?)
-  - For GET requests, decrypt the message after reading from the database
+- [**Done**] Encryption at rest
+  - For POST requests, encrypt the message before storage
+  - For GET requests, decrypt the message after reading/deleting from the database
 - Use HTTPS for all communication
 - Delete stored messages after 24 hours
   - Run batch deletion once per day, or
