@@ -18,11 +18,13 @@ beforeAll(() => {
     });
 });
 
-it('should respond with "Rooting for you!"', () => {
-    return request(app)
-    .get('/')
-    .then(res => {
-        expect(res.text).toBe('Rooting for you!');
+describe('test root route', () => {
+    it('should respond with "Rooting for you!"', () => {
+        return request(app)
+        .get('/')
+        .then(res => {
+            expect(res.text).toBe('Rooting for you!');
+        });
     });
 });
 
@@ -81,29 +83,46 @@ describe('test find and delete of a document', () => {
     });
 });
 
-it('should say that write succeeded and return a valid id when a proper message is POSTed', () => {
-    return request(app)
-    .post('/write')
-    // Send 'as application/x-www-form-urlencoded'
-    .type('form')
-    .send({
-        message: 'A test message'
-    })
-    .then(res => {
-        expect(res.body.writeSucceeded).toBe(true);
-        expect(res.body.id.length).toBe(24);
-    });
-});
+describe('test creation of a document', () => {
+    let createdId;
 
-it('should say that write did not succeed when the message property is missing from a POST', () => {
-    return request(app)
-    .post('/write')
-    .type('form')
-    .send({
-        notMessage: 'A test message'
-    })
-    .then(res => {
-        expect(res.body.writeSucceeded).toBe(false);
-        expect(res.body.id).toBe(undefined);
-    })
+    afterAll(() => {
+        return request(app)
+        .get(`/read/${createdId}`)
+        .then(res => {
+            console.log('Cleaned up test document created with id ' + res.body.deletedId);
+        })
+        .catch(err => {
+            console.log('Cleanup failed.');
+            console.log(err);
+        });
+    });
+
+    it('should say that write succeeded and return a valid id when a proper message is POSTed', () => {
+        return request(app)
+        .post('/write')
+        // Send 'as application/x-www-form-urlencoded'
+        .type('form')
+        .send({
+            message: 'A test message'
+        })
+        .then(res => {
+            createdId = res.body.id;
+            expect(res.body.writeSucceeded).toBe(true);
+            expect(res.body.id.length).toBe(24);
+        });
+    });
+    
+    it('should say that write did not succeed when the message property is missing from a POST', () => {
+        return request(app)
+        .post('/write')
+        .type('form')
+        .send({
+            notMessage: 'A test message'
+        })
+        .then(res => {
+            expect(res.body.writeSucceeded).toBe(false);
+            expect(res.body.id).toBe(undefined);
+        })
+    });
 });
