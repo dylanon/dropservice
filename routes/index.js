@@ -1,5 +1,7 @@
 const bodyParser = require('body-parser');
 const ObjectID = require('mongodb').ObjectID;
+const encrypt = require('../utils/encrypt');
+const decrypt = require('../utils/decrypt');
 
 module.exports = function(app, collection) {
     // Apply middleware
@@ -28,10 +30,11 @@ module.exports = function(app, collection) {
             _id: new ObjectID(req.params.id)
         })
         .then(data => {
+            const decryptedMessage = decrypt(data.value.message);
             // Send the stored message
             res.send({
                 deletedId: data.value._id,
-                message: data.value.message,
+                message: decryptedMessage,
                 details: `Deleted document with id ${data.value._id}.`
             });
         })
@@ -48,8 +51,9 @@ module.exports = function(app, collection) {
 
     app.post('/write', (req, res) => {
         if (req.body.message) {
+            const encryptedMessage = encrypt(req.body.message);
             collection.insertOne({
-                message: req.body.message
+                message: encryptedMessage
             })
             .then(result => {
                 const reply = {
