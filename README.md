@@ -4,12 +4,12 @@ Node.js backend for a web application that stores messages for one-time access.
 
 ## Basic Functionality
 
-- On receipt of a POST request:
+- [**Done**] On receipt of a POST request:
   - Validate the data, if necessary
   - Insert message into a collection in a MongoDB data store
   - On success, return the document's ID
   - On error, return an error message
-- On recept of a GET request with a specific ID:
+- [**Done**] On receipt of a GET request with a specific ID:
   - Find the document by ID in MongoDB
   - If found:
     - Read the document's contents
