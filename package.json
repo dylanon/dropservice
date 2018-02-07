@@ -2,7 +2,7 @@
   "name": "dropservice",
   "version": "0.0.1",
   "description": "Backend for temporary message drop system.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
