@@ -1,7 +1,6 @@
 // Import dependencies
 const express = require('express');
 const MongoClient = require('mongodb');
-const env = require('./env');
 
 // Import routes
 const defineRoutes = require('./routes');
@@ -10,8 +9,8 @@ const defineRoutes = require('./routes');
 const app = express();
 
 // Set database credentials
-const MONGODB_URI = process.env.MONGODB_URI || env.MONGODB_URI;
-const MONGODB_NAME = process.env.MONGODB_NAME || env.MONGODB_NAME;
+const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_NAME = process.env.MONGODB_NAME;
 
 MongoClient.connect(MONGODB_URI)
 .then(client => {

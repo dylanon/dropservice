@@ -1,16 +1,20 @@
+// Set environment variables for local development without Heroku CLI
+if (process.env.NODE_ENV === 'development') {
+    require('dotenv').config();
+}
+
 const request = require('supertest');
 const express = require('express');
 const MongoClient = require('mongodb');
 
 const app = express();
-const env = require('../env');
 const defineRoutes = require('./index');
 
 beforeAll(() => {
     let collection;
-    return MongoClient.connect(env.MONGODB_URI)
+    return MongoClient.connect(process.env.MONGODB_URI)
     .then(client => {
-        collection = client.db(env.MONGODB_NAME).collection('drops');
+        collection = client.db(process.env.MONGODB_NAME).collection('drops');
         defineRoutes(app, collection);
     })
     .catch(error => {
