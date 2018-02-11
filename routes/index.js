@@ -5,9 +5,7 @@ const decrypt = require('../utils/decrypt');
 
 module.exports = function(app, collection) {
     // Apply middleware
-    app.use(bodyParser.urlencoded({
-        extended: true
-    }));
+    app.use(bodyParser.json());
 
     // Define routes
     app.get('/', (req, res) => {
