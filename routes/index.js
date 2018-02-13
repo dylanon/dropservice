@@ -51,7 +51,8 @@ module.exports = function(app, collection) {
         if (req.body.message) {
             const encryptedMessage = encrypt(req.body.message);
             collection.insertOne({
-                message: encryptedMessage
+                message: encryptedMessage,
+                timeCreated: Date.now()
             })
             .then(result => {
                 const reply = {
