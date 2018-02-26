@@ -9,14 +9,14 @@ module.exports = function(app, collection) {
 
     // Define routes
     app.get('/', (req, res) => {
-        res.send('Rooting for you!');
+        res.status(200).send('Rooting for you!');
     });
 
     app.get('/read/:id', (req, res) => {
         // Validate the id
         // ObjectID requires a string of 24 hex characters
         if (req.params.id.length !== 24) {
-            return res.send({
+            return res.status(400).send({
                 deletedId: null,
                 message: null,
                 details: 'Invalid request. id must be a string of 24 hex characters.'
@@ -30,7 +30,7 @@ module.exports = function(app, collection) {
         .then(data => {
             const decryptedMessage = decrypt(data.value.message);
             // Send the stored message
-            res.send({
+            res.status(200).send({
                 deletedId: data.value._id,
                 message: decryptedMessage,
                 details: `Deleted document with id ${data.value._id}.`
@@ -39,7 +39,7 @@ module.exports = function(app, collection) {
         .catch(error => {
             // findOneAndDelete throws an error if the id is not found
             // Handle it!
-            res.send({
+            res.status(404).send({
                 deletedId: null,
                 message: null,
                 details: `Could not find document with id ${req.params.id}. Nothing deleted.`
@@ -60,7 +60,7 @@ module.exports = function(app, collection) {
                     details: 'Write to database succeeded!',
                     id: result.insertedId
                 }
-                res.send(reply);
+                res.status(201).send(reply);
             })
             .catch(error => {
                 const reply = {
@@ -68,7 +68,7 @@ module.exports = function(app, collection) {
                     details: 'Failed to write to database.',
                     id: undefined
                 }
-                res.send(reply);
+                res.status(500).send(reply);
             });
         } else {
             const reply = {
@@ -76,7 +76,7 @@ module.exports = function(app, collection) {
                 details: "Invalid request - Define the 'message' property in your request!",
                 id: undefined
             }
-            res.send(reply);
+            res.status(400).send(reply);
         }
     });
 }
