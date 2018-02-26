@@ -37,7 +37,7 @@ describe('test creation of a document', () => {
 
     afterAll(() => {
         return request(app)
-        .get(`/read/${createdId}`)
+        .get(`/retrieve/${createdId}`)
         .then(res => {
             console.log('Cleaned up test document created with id ' + res.body.deletedId);
         })
@@ -49,7 +49,7 @@ describe('test creation of a document', () => {
 
     it('should say that write succeeded and return a valid id when a proper message is POSTed', () => {
         return request(app)
-        .post('/write')
+        .post('/drop')
         // Sends JSON by default
         .send({
             message: 'A test message'
@@ -63,7 +63,7 @@ describe('test creation of a document', () => {
     
     it('should say that write did not succeed when the message property is missing from a POST', () => {
         return request(app)
-        .post('/write')
+        .post('/drop')
         // Sends JSON by default
         .send({
             notMessage: 'A test message'
@@ -79,7 +79,7 @@ describe('test find and delete of a document', () => {
     let documentId;
     beforeAll(() => {
         return request(app)
-        .post('/write')
+        .post('/drop')
         // Sends JSON by default
         .send({
             message: 'A test message'
@@ -95,7 +95,7 @@ describe('test find and delete of a document', () => {
 
     it('should respond with a valid id when a document is accessed', () => {
         return request(app)
-        .get(`/read/${documentId}`)
+        .get(`/retrieve/${documentId}`)
         .then(res => {
             expect(res.body.deletedId).toBe(documentId);
         })
@@ -103,7 +103,7 @@ describe('test find and delete of a document', () => {
 
     it('should respond with null data when the requested id is too short', () => {
         return request(app)
-        .get('/read/1')
+        .get('/retrieve/1')
         .then(res => {
             expect(res.body.deletedId).toBe(null);
             expect(res.body.message).toBe(null);
@@ -112,7 +112,7 @@ describe('test find and delete of a document', () => {
     
     it('should respond with null data when the requested id is too long', () => {
         return request(app)
-        .get('/read/123456789123456789123456789')
+        .get('/retrieve/123456789123456789123456789')
         .then(res => {
             expect(res.body.deletedId).toBe(null);
             expect(res.body.message).toBe(null);
@@ -121,7 +121,7 @@ describe('test find and delete of a document', () => {
     
     it('should respond with null data when the requested id is not found', () => {
         return request(app)
-        .get('/read/111111111111111111111111')
+        .get('/retrieve/111111111111111111111111')
         .then(res => {
             expect(res.body.deletedId).toBe(null);
             expect(res.body.message).toBe(null);

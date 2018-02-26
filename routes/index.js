@@ -12,7 +12,7 @@ module.exports = function(app, collection) {
         res.status(200).send('Rooting for you!');
     });
 
-    app.get('/read/:id', (req, res) => {
+    app.get('/retrieve/:id', (req, res) => {
         // Validate the id
         // ObjectID requires a string of 24 hex characters
         if (req.params.id.length !== 24) {
@@ -47,7 +47,7 @@ module.exports = function(app, collection) {
         });
     });
 
-    app.post('/write', (req, res) => {
+    app.post('/drop', (req, res) => {
         if (req.body.message) {
             const encryptedMessage = encrypt(req.body.message);
             collection.insertOne({
