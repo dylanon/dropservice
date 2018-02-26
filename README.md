@@ -1,6 +1,6 @@
 # dropservice
 
-Node.js REST API that stores messages for one-time access within 24 hours. [Service is live here.](http://mighty-everglades-39422.herokuapp.com/)
+Node.js REST API that stores messages for one-time access within 24 hours. [Service is live here.](http://drop-service.herokuapp.com/)
 
 *This is an experimental project - Use at your own risk!*
 
@@ -15,7 +15,7 @@ Set the body of your request to a JSON object with a single key/value pair. The 
 Example:
 
 ```javascript
-fetch('http://mighty-everglades-39422.herokuapp.com/drop', {
+fetch('http://drop-service.herokuapp.com/drop', {
     method: 'POST',
     headers: {
         "Content-Type": "application/json"
@@ -57,7 +57,7 @@ fetch('http://mighty-everglades-39422.herokuapp.com/drop', {
 Set the ID of the drop you would like retrieve as a *route parameter* in your GET request.
 
 ```javascript
-  fetch('http://mighty-everglades-39422.herokuapp.com/retrieve/5a93744897320d091c044a26')
+  fetch('http://drop-service.herokuapp.com/retrieve/5a93744897320d091c044a26')
   .then(res => res.json())
   .then(data => {
     // Do something with the data
