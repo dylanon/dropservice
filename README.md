@@ -24,7 +24,7 @@ fetch('http://drop-service.herokuapp.com/drop', {
         message: 'Hello, world!'
     })
 })
-.then(res => res.json();)
+.then(res => res.json())
 .then(data => {
   // Log the response to the console
   console.log(data);
